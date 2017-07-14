@@ -1,46 +1,38 @@
 //window.alert ("Welcome to Rionna Glenn's website. Hope You Enjoy")
-$(document).ready(function(){
-  $(".editor-header a").click(function(e){
-    e.preventDefault();
+$(function(){
+  var inDexValue;
 
-    var _val = $(this).data("role"),
-        _sizeValIn = parseInt($(this).data("size-val") + 1),
-        _sizeValRe = parseInt($(this).data("size-val") - 1),
-        _size = $(this).data("size");
-    if(_size == "in-size"){
-      document.execCommand(_val, false, _sizeValIn + "px");
-    } else{
-      document.execCommand(_val, false, _sizeValRe + "px");
-    }
-  });
-});
+    $('button').click( function() {
+      if($('#userCmnt').val().length == ''){
+       alert('Please Enter Your Comment');
+       return true;
+      }
+      var userCmnt = $('#userCmnt').val();
+      if($('#submit').hasClass('editNow')){
 
-$(document).ready(function(){
-  var $text = $("#text"),
-      $submit = $("input[type='submit']"),
-      $listComment = $(".list-comments"),
-      $loading = $(".loading"),
-      _data,
-      $totalCom =
-  $($submit).click(function(){
-    if($text.html() == ""){
-      alert("Plesea write a comment!");
-      $text.focus();
-    } else{
-      _data = $text.html();
-      $.ajax({
-        type: "POST",
-        url: window.local,
-        data: _data,
-        cache: false,
-        success: function(html){
-          $loading.show().fadeOut(300);
-          $listComment.append("<div>"+_data+"</div>");
-          $text.html("");
-          $totalCom.text($(".list-comments > div").length);
-        }
-      });
-      return false;
-    }
+        $('#cmntContr>div.viewCmnt').eq(inDexValue).children('p').html(userCmnt);
+
+      }else{
+
+    $('#cmntContr').append("<div class='viewCmnt'><p>"+ userCmnt + "</p><span class='edit'></span><span class='delete'></span></div>");
+     }
+      $('#userCmnt').val('');
+      $(this).removeClass('editNow');
   });
-});
+
+  // Delete
+  $('#cmntContr').on('click', '.delete', function(){
+    confirm("Delete Coformation");
+    $(this).parent().remove();
+  });
+  // Edit
+  $('#cmntContr').on('click', '.edit', function(){
+
+    var toEdit = $(this).prev('p').html();
+    //alert(toEdit);
+    $('#userCmnt').val(toEdit);
+    $('button').addClass('editNow');
+    inDexValue = $(this).parent('div.viewCmnt').index();
+
+  });
+  });
