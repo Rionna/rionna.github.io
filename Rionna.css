@@ -15,6 +15,7 @@ margin-right: 80px;
 margin-left: 80px;
 }
 h1, h2 {color: white;
+  padding-bottom: 0;
 }
 h3{
   text-align: left;
